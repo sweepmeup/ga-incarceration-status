@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Static Website</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #fff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      h1 {
+        text-align: center;
+      }
+      form {
+        display: flex;
+        flex-direction: column;
+      }
+      input[type="text"] {
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+      }
+      button {
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: #0056b3;
+      }
+      .result {
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Simple Form</h1>
+      <form id="simpleForm">
+        <input
+          type="text"
+          id="inputField"
+          placeholder="Enter something"
+          required
+        />
+        <button type="submit">Submit</button>
+      </form>
+      <div class="result" id="result"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("simpleForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const inputField = document.getElementById("inputField").value;
+          const disclaimerUrl =
+            "https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryForm.jsp?vDisclaimer=True";
+          const lookupUrl = `https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryRedirector.jsp?NextPage=2&vUnoCaseNoRadioButton=UNO_NO&vOffenderId=${inputField}`;
+
+          fetch(disclaimerUrl, {
+            method: "POST",
+          })
+            .then(() =>
+              fetch(lookupUrl, {
+                method: "POST",
+              })
+            )
+            .then((response) => response.text())
+            .then((data) => {
+              const parser = new DOMParser();
+              const doc = parser.parseFromString(data, "text/html");
+              const extractedContent = doc.querySelector("h1").textContent; // Change the selector as needed
+              document.getElementById("result").innerText = extractedContent;
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+    </script>
+  </body>
+</html>
