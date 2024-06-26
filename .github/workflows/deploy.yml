@@ -33,9 +33,9 @@ jobs:
     - name: Deploy to AWS Lambda
       uses: appleboy/lambda-action@v0.2.0
       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: ${{ secrets.AWS_REGION }}
-        function-name: ga-incarceration-status
-        zip-file: lambda_function.zip
+        aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws_region: ${{ secrets.AWS_REGION }}
+        function_name: ga-incarceration-status
+        zip_file: lambda_function.zip
         handler: main.handler
