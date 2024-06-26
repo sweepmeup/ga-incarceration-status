@@ -69,30 +69,14 @@
           event.preventDefault();
 
           const inputField = document.getElementById("inputField").value;
-          const corsProxyUrl = "https://corsproxy.io/";
-          const disclaimerUrl =
-            "https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryForm.jsp?vDisclaimer=True";
-          const lookupUrl = `https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryRedirector.jsp?NextPage=2&vUnoCaseNoRadioButton=UNO_NO&vOffenderId=${inputField}`;
-          const corsDisclaimerUrl = `${corsProxyUrl}?${encodeURIComponent(
-            disclaimerUrl
-          )}`;
-          const corsLookupUrl = `${corsProxyUrl}?${encodeURIComponent(
-            lookupUrl
-          )}`;
+          const url = `https://wth2q4k4tidqomypmxszlaru3e0hgbyb.lambda-url.us-east-2.on.aws/?gdc_id=${inputField}`;
 
-          fetch(corsDisclaimerUrl, {
-            method: "POST",
+          fetch(url, {
+            method: "GET",
           })
-            .then(() =>
-              fetch(corsLookupUrl, {
-                method: "POST",
-              })
-            )
             .then((response) => response.text())
             .then((data) => {
-              const parser = new DOMParser();
-              const doc = parser.parseFromString(data, "text/html");
-              document.getElementById("result").innerText = doc;
+              document.getElementById("result").innerText = data;
             })
             .catch((error) => {
               console.error("Error:", error);
