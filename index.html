@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Simple Static Website</title>
+    <title>GA Incarceration Status</title>
     <style>
       body {
         font-family: Arial, sans-serif;
@@ -49,7 +49,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Simple Form</h1>
+      <h1>Georgia Incarceration Status Lookup</h1>
       <form id="simpleForm">
         <input
           type="text"
@@ -63,6 +63,15 @@
     </div>
 
     <script>
+      const KEY_TO_TEXT = {
+        gdc_id: "GDC ID",
+        name: "Name",
+        most_recent_institution: "Most Recent Institution",
+        max_possible_release_date: "Max Possible Release Date",
+        actual_release_date: "Actual Release Date",
+        current_status: "Current Status",
+      };
+
       document
         .getElementById("simpleForm")
         .addEventListener("submit", function (event) {
@@ -74,12 +83,25 @@
           fetch(url, {
             method: "GET",
           })
-            .then((response) => response.text())
+            .then((response) => {
+              if (response.ok) {
+                return response.json();
+              }
+              throw new Error(response.text);
+            })
             .then((data) => {
-              document.getElementById("result").innerText = data;
+              htmlString = Object.keys(data)
+                .filter((key) => KEY_TO_TEXT.hasOwnProperty(key))
+                .map(
+                  (key) =>
+                    `<p><strong>${KEY_TO_TEXT[key]}:</strong> ${data[key]}</p>`
+                )
+                .join("");
+              document.getElementById("result").innerHTML = htmlString;
             })
             .catch((error) => {
               console.error("Error:", error);
+              document.getElementById("result").innerText = `Error: ${error}`;
             });
         });
     </script>

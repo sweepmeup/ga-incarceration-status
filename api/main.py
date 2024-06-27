@@ -49,7 +49,7 @@ def extract_incarceration_details(data):
 def handler(event, context):
     try:
         # Assuming the HTML content is passed in the body of the request
-        gdc_id = event["queryStringParameters"].get("gdc_id")
+        gdc_id = event.get("queryStringParameters", {}).get("gdc_id")
         if not gdc_id:
             return {
                 "statusCode": 400,
@@ -60,6 +60,7 @@ def handler(event, context):
 
         html_data = get_html_data(gdc_id)
         result = extract_incarceration_details(html_data)
+        result["gdc_id"] = str(gdc_id)
 
         return {"statusCode": 200, "body": json.dumps(result)}
 
