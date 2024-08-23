@@ -1,4 +1,5 @@
 import json
+import logging
 from bs4 import BeautifulSoup
 import requests
 
@@ -45,7 +46,7 @@ def extract_incarceration_details(data):
     return details
 
 
-def lambda_handler(event, context):
+def handler(event, context):
     try:
         # Assuming the HTML content is passed in the body of the request
         gdc_id = event["queryStringParameters"].get("gdc_id")
