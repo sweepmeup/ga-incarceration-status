@@ -69,15 +69,22 @@
           event.preventDefault();
 
           const inputField = document.getElementById("inputField").value;
+          const corsProxyUrl = "https://corsproxy.io/";
           const disclaimerUrl =
             "https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryForm.jsp?vDisclaimer=True";
           const lookupUrl = `https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryRedirector.jsp?NextPage=2&vUnoCaseNoRadioButton=UNO_NO&vOffenderId=${inputField}`;
+          const corsDisclaimerUrl = `${corsProxyUrl}?${encodeURIComponent(
+            disclaimerUrl
+          )}`;
+          const corsLookupUrl = `${corsProxyUrl}?${encodeURIComponent(
+            lookupUrl
+          )}`;
 
-          fetch(disclaimerUrl, {
+          fetch(corsDisclaimerUrl, {
             method: "POST",
           })
             .then(() =>
-              fetch(lookupUrl, {
+              fetch(corsLookupUrl, {
                 method: "POST",
               })
             )
@@ -85,8 +92,7 @@
             .then((data) => {
               const parser = new DOMParser();
               const doc = parser.parseFromString(data, "text/html");
-              const extractedContent = doc.querySelector("h1").textContent; // Change the selector as needed
-              document.getElementById("result").innerText = extractedContent;
+              document.getElementById("result").innerText = doc;
             })
             .catch((error) => {
               console.error("Error:", error);
