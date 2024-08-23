@@ -90,8 +90,7 @@
               throw new Error(response.text);
             })
             .then((data) => {
-              htmlString = Object.keys(data)
-                .filter((key) => KEY_TO_TEXT.hasOwnProperty(key))
+              htmlString = Object.keys(KEY_TO_TEXT)
                 .map(
                   (key) =>
                     `<p><strong>${KEY_TO_TEXT[key]}:</strong> ${data[key]}</p>`
