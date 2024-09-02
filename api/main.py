@@ -1,5 +1,4 @@
 import json
-import logging
 from bs4 import BeautifulSoup
 import requests
 
@@ -8,9 +7,11 @@ def get_html_data(gdc_id):
     session = requests.Session()
     session.post(
         "https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryForm.jsp?vDisclaimer=True",
+        verify=False,
     )
     response = session.post(
         f"https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryRedirector.jsp?NextPage=2&vUnoCaseNoRadioButton=UNO_NO&vOffenderId={gdc_id}",
+        verify=False,
     )
     return response.text
 
