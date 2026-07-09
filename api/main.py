@@ -11,7 +11,12 @@ def get_html_data(gdc_id):
         verify=False,
     )
     response = session.post(
-        f"https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryRedirector.jsp?NextPage=2&vUnoCaseNoRadioButton=UNO_NO&vOffenderId={gdc_id}",
+        "https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryRedirector.jsp",
+        data={
+            "NextPage": "2",
+            "vUnoCaseNoRadioButton": "UNO_NO",
+            "vOffenderId": str(gdc_id),
+        },
         verify=False,
     )
     return response.text
