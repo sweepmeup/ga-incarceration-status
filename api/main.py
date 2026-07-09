@@ -6,7 +6,8 @@ import requests
 def get_html_data(gdc_id):
     session = requests.Session()
     session.post(
-        "https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryForm.jsp?vDisclaimer=True",
+        "https://services.gdc.ga.gov/GDC/OffenderQuery/jsp/OffQryForm.jsp",
+        data={"vDisclaimer": "True"},
         verify=False,
     )
     response = session.post(
@@ -49,7 +50,6 @@ def extract_incarceration_details(data):
 
 def handler(event, context):
     try:
-        # Assuming the HTML content is passed in the body of the request
         gdc_id = event.get("queryStringParameters", {}).get("gdc_id")
         if not gdc_id:
             return {
